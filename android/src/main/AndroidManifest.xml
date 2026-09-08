@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Required to reach api.dpdpashield.in and to run the offline-queue
+         flush after connectivity is restored. No other permission is
+         requested - notably no ACCESS_FINE_LOCATION, no READ_PHONE_STATE:
+         this SDK does not fingerprint the device, it only stores an
+         on-device hash of whatever identifier the host app already has. -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+</manifest>
