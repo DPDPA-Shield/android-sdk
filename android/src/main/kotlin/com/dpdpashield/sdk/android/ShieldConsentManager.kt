@@ -93,10 +93,17 @@ class ShieldConsentManager private constructor(
      * refreshes the IAB TCF SharedPreferences keys. [identifier] is hashed
      * on-device before anything is queued or sent - see
      * [com.dpdpashield.sdk.core.hash.DataPrincipalHasher].
+     *
+     * [externalId] is the host app's own internal ID for this user (e.g.
+     * their own users-table primary key) - sent as-is, never hashed, so it
+     * can be used later to correlate this record back to the app's own
+     * database (Consent Records search, exports,
+     * `GET /consent/by-external-id/:externalId`). Optional, independent of
+     * [identifier].
      */
-    fun recordDecision(identifier: String, given: Map<String, Boolean>, languageShown: String) {
+    fun recordDecision(identifier: String, given: Map<String, Boolean>, languageShown: String, externalId: String? = null) {
         val now = System.currentTimeMillis()
-        engine.recordDecision(identifier, given, languageShown, now, writeId = UUID.randomUUID().toString())
+        engine.recordDecision(identifier, given, languageShown, now, writeId = UUID.randomUUID().toString(), externalId = externalId)
 
         val store = EncryptedConsentStore.create(context)
         gate.currentDecision()?.let { store.saveDecision(it) }

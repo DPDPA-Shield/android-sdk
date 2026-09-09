@@ -78,6 +78,11 @@ class ShieldConsentEngine(
      * [identifier] is hashed on-device via [DataPrincipalHasher] and only the
      * hash ever leaves the device - see [SdkRecordRequest.identifierHash]'s
      * doc comment.
+     *
+     * [externalId] is the host app's own internal ID for this data principal
+     * (e.g. their users-table primary key) - passed straight through, never
+     * hashed or otherwise transformed, since unlike [identifier] it isn't PII
+     * we need to protect on the wire. See [SdkRecordRequest.externalId].
      */
     fun recordDecision(
         identifier: String,
@@ -85,6 +90,7 @@ class ShieldConsentEngine(
         languageShown: String,
         nowEpochMs: Long,
         writeId: String,
+        externalId: String? = null,
     ): QueuedWrite {
         val n = notice ?: error("recordDecision called before loadNotice succeeded")
 
@@ -103,6 +109,7 @@ class ShieldConsentEngine(
             language = languageShown,
             noticeId = n.id,
             identifierHash = DataPrincipalHasher.hash(identifier),
+            externalId = externalId,
         )
         val queued = queue.enqueue(writeId, request, config.appIdentity, nowEpochMs)
         return QueuedWrite(queued.id)

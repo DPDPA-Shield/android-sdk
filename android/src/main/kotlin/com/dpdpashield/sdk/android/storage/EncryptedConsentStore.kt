@@ -119,6 +119,7 @@ private data class SdkRecordRequestDto(
     val noticeId: String? = null,
     val identifierHash: String? = null,
     val identifier: String? = null,
+    val externalId: String? = null,
 )
 
 private fun QueuedConsentWrite.toDto() = QueuedWriteDto(
@@ -139,5 +140,5 @@ private fun QueuedWriteDto.toCoreModel() = QueuedConsentWrite(
     nextAttemptAtEpochMs = nextAttemptAtEpochMs,
 )
 
-private fun SdkRecordRequest.toDto() = SdkRecordRequestDto(apiKey, status, purposes, userAgent, url, language, positionShown, noticeId, identifierHash, identifier)
-private fun SdkRecordRequestDto.toCoreModel() = SdkRecordRequest(apiKey, status, purposes, userAgent, url, language, positionShown, noticeId, identifierHash, identifier)
+private fun SdkRecordRequest.toDto() = SdkRecordRequestDto(apiKey, status, purposes, userAgent, url, language, positionShown, noticeId, identifierHash, identifier, externalId)
+private fun SdkRecordRequestDto.toCoreModel() = SdkRecordRequest(apiKey, status, purposes, userAgent, url, language, positionShown, noticeId, identifierHash, identifier, externalId)

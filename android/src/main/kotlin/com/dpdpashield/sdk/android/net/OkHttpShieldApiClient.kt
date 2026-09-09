@@ -97,6 +97,7 @@ private data class SdkRecordBody(
     val noticeId: String? = null,
     val identifierHash: String? = null,
     val identifier: String? = null,
+    val externalId: String? = null,
 )
 
 @Serializable
@@ -154,6 +155,7 @@ class OkHttpShieldApiClient(
                 noticeId = request.noticeId,
                 identifierHash = request.identifierHash,
                 identifier = request.identifier,
+                externalId = request.externalId,
             )
             val requestBuilder = Request.Builder()
                 .url("$BASE_URL/sdk-record")

@@ -28,6 +28,13 @@ data class SdkRecordRequest(
     /** Raw identifier fallback - only used by a caller that explicitly opts
      *  out of on-device hashing (e.g. server-to-server reconciliation). */
     val identifier: String? = null,
+    /** The host app's OWN internal ID for this data principal (e.g. their
+     *  users-table primary key) - never derived by the SDK, purely whatever
+     *  the caller already knows about their own logged-in user. Independent
+     *  of [identifierHash]/[identifier] - set none, one, or both alongside
+     *  this. Mirrors `RecordConsentSchema.externalId` /
+     *  `SdkRecordSchema.externalId` server-side (both capped at 200 chars). */
+    val externalId: String? = null,
 )
 
 /** The `{ error: { code?, message } }` envelope every route in this API uses. */

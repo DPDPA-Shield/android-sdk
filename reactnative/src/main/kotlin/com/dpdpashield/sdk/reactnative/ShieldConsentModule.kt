@@ -104,11 +104,15 @@ class ShieldConsentModule(reactContext: ReactApplicationContext) : ReactContextB
         promise.resolve(m.restoredDecision()?.let(Serialize::decision))
     }
 
+    // externalId is nullable (not a Kotlin default) because RN's old bridge
+    // dispatches by reflected method signature - JS must always pass all
+    // positional args explicitly (null/undefined for "not set"), a Kotlin
+    // default value is never consulted across the bridge.
     @ReactMethod
-    fun recordDecision(identifier: String, given: ReadableMap, languageShown: String, promise: Promise) {
+    fun recordDecision(identifier: String, given: ReadableMap, languageShown: String, externalId: String?, promise: Promise) {
         val m = requireManager(promise) ?: return
         try {
-            m.recordDecision(identifier, readableMapToBooleanMap(given), languageShown)
+            m.recordDecision(identifier, readableMapToBooleanMap(given), languageShown, externalId)
             promise.resolve(null)
         } catch (t: Throwable) {
             promise.reject("SHIELD_RECORD_DECISION_ERROR", t.message ?: "recordDecision() failed", t)
